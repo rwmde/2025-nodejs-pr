@@ -1,0 +1,19 @@
+{
+  "name": "pr-1",
+  "version": "1.0.0",
+  "description": "In this Practical Task you will work with pure Node.js without any frameworks and external libraries.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mar1azzz/node_js_hometask_1.git"
+  },
+  "author": "Maria Zatsepina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mar1azzz/node_js_hometask_1/issues"
+  },
+  "homepage": "https://github.com/mar1azzz/node_js_hometask_1#readme"
+}
