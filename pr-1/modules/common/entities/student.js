@@ -1,4 +1,4 @@
-module.export = class Student {
+module.exports = class Student {
   /**
    * @param {string} id
    * @param {stirng} name
