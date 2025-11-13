@@ -1,4 +1,5 @@
-const { formatSimple, formatVerbose } = require("./formatter");
+const formatSimple = require("./formatters/simpleFormatter");
+const formatVerbose = require("./formatters/verboseFormatter");
 const writer = require("./writer");
 
 class Logger {
