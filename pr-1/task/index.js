@@ -1,81 +1,73 @@
-// Student Management System
+// index.js
+const {
+  addStudent,
+  removeStudent,
+  getStudentById,
+  getStudentsByGroup,
+  getAllStudents,
+  calculateAverageAge,
+  loadStudents,
+  getPlainStudents
+} = require('./services/studentService');
 
-class Student {
-  /**
-   * @param {string} id
-   * @param {stirng} name
-   * @param {number} age
-   * @param {string} group
-   */
-  constructor(id, name, age, group) {
-    this.id = id;
-    this.name = name;
-    this.age = age;
-    this.group = group;
+const Logger = require('./services/logger');
+const { saveToJSON, loadJSON } = require('./services/storage');
+
+// --- Parse CLI arguments ---
+const args = process.argv.slice(2);
+const verbose = args.includes('--verbose');
+const quiet = args.includes('--quiet');
+
+const logger = new Logger({ verbose, quiet });
+
+// --- Load students from JSON ---
+const loaded = loadJSON();
+loadStudents(loaded);
+logger.log('Loaded students from JSON', { count: loaded.length });
+
+// --- CLI commands ---
+if (args.includes('--list')) {
+  const all = getAllStudents();
+  logger.log('All students:', all);
+}
+
+if (args.includes('--average')) {
+  const avg = calculateAverageAge();
+  logger.log(`Average age of students: ${avg}`);
+}
+
+const addIdx = args.indexOf('--add');
+if (addIdx !== -1 && args[addIdx + 1]) {
+  try {
+    const obj = JSON.parse(args[addIdx + 1]);
+    const student = addStudent(obj);
+    saveToJSON(getPlainStudents());
+    logger.log('Added new student:', student);
+  } catch (err) {
+    logger.log('Error parsing JSON for --add', { error: err.message });
   }
 }
 
-const students = [
-  new Student("1", "John Doe", 20, 2),
-  new Student("2", "Jane Smith", 23, 3),
-  new Student("3", "Mike Johnson", 18, 2),
-];
-
-function addStudent(name, age, grade) {
-  throw new Error("Method is not yet implemented");
+const removeIdx = args.indexOf('--remove');
+if (removeIdx !== -1 && args[removeIdx + 1]) {
+  const id = args[removeIdx + 1];
+  const result = removeStudent(id);
+  saveToJSON(getPlainStudents());
+  logger.log(result ? `Removed student ${id}` : `Student ${id} not found`);
 }
 
-function removeStudent(id) {
-  throw new Error("Method is not yet implemented");
-}
 
-function getStudentById(id) {
-  throw new Error("Method is not yet implemented");
-}
+// Add a student:
+// node index.js --add '{"name":"Anna","age":21,"group":"A1"}'
 
-function getStudentsByGroup(group) {
-  throw new Error("Method is not yet implemented");
-}
+// List all students:
+// node index.js --list
 
-function getAllStudents() {
-  throw new Error("Method is not yet implemented");
-}
+//  Show average age:
+// node index.js --average
 
-function calculateAverageAge() {
-  throw new Error("Method is not yet implemented");
-}
+// Remove student by ID:
+// node index.js --remove <id>
 
-class Logger {
-  #isVerboseModeEnabled = false;
-  #isQuietModeEnabled = false;
-
-  constructor(verbose = false, quiet = false) {
-    this.#isVerboseModeEnabled = verbose;
-    this.#isQuietModeEnabled = quiet;
-  }
-
-  /**
-   * TODO: Implement the log method
-   *
-   * If "verbose" flag is set: log the message + log additional system data from the os module
-   * If "quiet" flag is set: suppress the logging output
-   *
-   *  Example system data to log:
-   * - Current timestamp
-   * - Operating system platform
-   * - Total memory
-   * - Free memory
-   * - CPU model
-   */
-  log(...data) {
-    console.log(...data);
-  }
-}
-
-function saveToJSON(data, filePath) {
-  throw new Error("Method is not yet implemented");
-}
-
-function loadJSON(filePath) {
-  throw new Error("Method is not yet implemented");
-}
+// Enable verbose logging:
+// node index.js --verbose --list
