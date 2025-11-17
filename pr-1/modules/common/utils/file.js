@@ -1,3 +1,11 @@
+/**
+ * Утилиты для работы с JSON-файлами.
+ * readJSON — читает файл и парсит JSON.
+ * writeJSON — записывает объект/массив в JSON-файл.
+ *
+ * @param {string} filePath — путь к файлу
+ */
+
 const fs = require("fs");
 
 function readJSON(filePath) {

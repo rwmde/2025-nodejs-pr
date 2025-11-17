@@ -1,3 +1,18 @@
+/**
+ * Репозиторий студентов — слой доступа к данным.
+ * Отвечает за:
+ *  - загрузку данных из JSON-файла
+ *  - сохранение данных
+ *  - операции поиска, фильтрации и создания студентов
+ *
+ * Использует:
+ *   readJSON, writeJSON  — для работы с файлами
+ *   resolvePath          — для корректного пути
+ *   generateId           — для генерации ID
+ *
+ * Является единственным источником данных (SRP).
+ */
+
 const { readJSON, writeJSON } = require("../common/utils/file");
 const { resolvePath } = require("../common/utils/pathResolver");
 const { generateId } = require("../common/utils/idGenerator");

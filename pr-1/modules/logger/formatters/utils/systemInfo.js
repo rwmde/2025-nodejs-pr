@@ -1,3 +1,8 @@
+/**
+ * Собирает информацию о системе (OS, CPU, память).
+ * Используется только в verbose-режиме логгера.
+ */
+
 const os = require("os");
 
 module.exports = function getSystemInfo() {

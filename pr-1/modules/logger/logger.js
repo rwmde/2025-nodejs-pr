@@ -1,3 +1,13 @@
+/**
+ * Основной логгер системы.
+ * Поддерживает 3 режима:
+ *  - обычный (INFO)
+ *  - verbose (детальный)
+ *  - quiet (лог отключён)
+ *
+ * @method log(message, ...args) — вывод сообщения
+ */
+
 const formatSimple = require("./formatters/simpleFormatter");
 const formatVerbose = require("./formatters/verboseFormatter");
 const writer = require("./writer");

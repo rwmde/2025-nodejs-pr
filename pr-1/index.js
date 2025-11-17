@@ -1,3 +1,14 @@
+/**
+ * Главная точка входа приложения.
+ * Выполняет:
+ *   - разбор CLI аргументов (--verbose / --quiet)
+ *   - создание логгера
+ *   - создание репозитория
+ *   - загрузку данных из файла
+ *   - выполнение сервисных операций
+ *   - сохранение данных обратно в JSON
+ */
+
 const Logger = require("./modules/logger/logger");
 const StudentRepository = require("./modules/students/StudentRepository");
 
