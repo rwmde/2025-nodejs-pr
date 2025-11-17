@@ -1,5 +1,6 @@
 const { readJSON, writeJSON } = require("../common/utils/file");
 const { resolvePath } = require("../common/utils/pathResolver");
+const { generateId } = require("../common/utils/idGenerator");
 const Student = require(resolvePath("modules/common/entities/student.js"));
 
 class StudentRepository {
@@ -27,7 +28,7 @@ class StudentRepository {
   }
 
   create(name, age, group) {
-    const newStudent = new Student(String(Date.now()), name, age, group);
+    const newStudent = new Student(generateId(), name, age, group);
     this.students.push(newStudent);
     return newStudent;
   }

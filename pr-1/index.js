@@ -1,12 +1,7 @@
 const Logger = require("./modules/logger/logger");
 const StudentRepository = require("./modules/students/StudentRepository");
 
-const addStudent = require("./modules/students/services/addStudent");
-const removeStudent = require("./modules/students/services/removeStudent");
-const getStudentById = require("./modules/students/services/getStudentById");
-const getStudentsByGroup = require("./modules/students/services/getStudentsByGroup");
-const getAllStudents = require("./modules/students/services/getAllStudents");
-const calculateAverageAge = require("./modules/students/services/calculateAverageAge");
+const services = require("./modules/students/services");
 
 const args = process.argv.slice(2);
 const isVerbose = args.includes("--verbose");
@@ -18,10 +13,10 @@ const repo = new StudentRepository();
 repo.loadFromFile("modules/testdata/students.json");
 logger.log("Students loaded.");
 
-addStudent(repo, logger, "Alice", 22, 4);
-getAllStudents(repo, logger);
-getStudentsByGroup(repo, logger, 2);
-calculateAverageAge(repo, logger);
+services.addStudent(repo, logger, "Alice", 22, 4);
+services.getAllStudents(repo, logger);
+services.getStudentsByGroup(repo, logger, 2);
+services.calculateAverageAge(repo, logger);
 
 repo.saveToFile("modules/testdata/students.json");
 logger.log("Students saved to file.");
