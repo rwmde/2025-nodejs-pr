@@ -3,4 +3,4 @@ const ARGS = {
     QUIET: '--quiet'
 };
 
-module.exports = { ARGS };
+module.exports = ARGS;

@@ -1,3 +1,7 @@
-const { ARGS } = require('./args');
+const ARGS = require('./args');
+const EVENTS = require('./events');
 
-module.exports = { ARGS };
+module.exports = {
+    ARGS,
+    EVENTS,
+};

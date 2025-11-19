@@ -23,4 +23,4 @@ function demo(manager, logger) {
     logger.log(`Students in group ${group}:`, studentsInGroup);
 }
 
-module.exports = { demo }
+module.exports = demo 
