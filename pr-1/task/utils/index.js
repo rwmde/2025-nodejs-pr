@@ -1,3 +1,4 @@
-const { parseArgs } = require('./parseArgs');
+const parseArgs = require('./parseArgs');
+const delay = require('./delay')
 
-module.exports = { parseArgs };
+module.exports = { parseArgs, delay };

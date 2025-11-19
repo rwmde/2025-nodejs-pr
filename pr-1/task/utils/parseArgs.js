@@ -12,4 +12,4 @@ function parseArgs() {
     return parsed;
 }
 
-module.exports = { parseArgs };
+module.exports = parseArgs 
