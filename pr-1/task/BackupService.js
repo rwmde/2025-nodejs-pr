@@ -8,6 +8,8 @@ class BackupService {
         this.backupInterval = backupInterval;
         this.intervalId = null;
         this.backupDir = path.join(__dirname, 'backups');
+        this.isBackupInProgress = false;
+        this.skippedIntervals = 0;
     }
 
     start() {
@@ -17,7 +19,21 @@ class BackupService {
         }
 
         this.logger.log(`Starting backup service (Interval: ${this.backupInterval}ms)...`);
-        this.intervalId = setInterval(() => this.backupData(), this.backupInterval);
+        this.intervalId = setInterval(() => {
+            if (this.isBackupInProgress) {
+                this.skippedIntervals++;
+                this.logger.log(`Backup in progress. Skipping interval. (Skipped: ${this.skippedIntervals})`);
+
+                if (this.skippedIntervals >= 3) {
+                    this.stop(); // Stop the service to prevent further errors/logs
+                    throw new Error('Backup service failed: I/O operation pending for 3 consecutive intervals.');
+                }
+                return;
+            }
+
+            this.skippedIntervals = 0;
+            this.backupData();
+        }, this.backupInterval);
     }
 
     stop() {
@@ -29,6 +45,7 @@ class BackupService {
     }
 
     async backupData() {
+        this.isBackupInProgress = true;
         try {
             // Ensure backup directory exists
             await fs.promises.mkdir(this.backupDir, { recursive: true });
@@ -44,6 +61,8 @@ class BackupService {
             this.logger.log(`Backup created successfully: ${filename}`);
         } catch (error) {
             this.logger.log('Backup failed:', error.message);
+        } finally {
+            this.isBackupInProgress = false;
         }
     }
 }
