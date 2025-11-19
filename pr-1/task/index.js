@@ -1,81 +1,43 @@
-// Student Management System
+const path = require('path');
+const StudentManager = require('./StudentManager');
+const Logger = require('./Logger');
+const demo = require('./demo');
+const { parseArgs, delay } = require('./utils');
+const EventObserver = require('./EventObserver');
+const BackupService = require('./BackupService');
+const BackupReporter = require('./BackupReporter');
 
-class Student {
-  /**
-   * @param {string} id
-   * @param {stirng} name
-   * @param {number} age
-   * @param {string} group
-   */
-  constructor(id, name, age, group) {
-    this.id = id;
-    this.name = name;
-    this.age = age;
-    this.group = group;
-  }
-}
+const DATA_FILE = path.join(__dirname, 'students.json');
+const BACKUP_DIR = path.join(__dirname, 'backups');
 
-const students = [
-  new Student("1", "John Doe", 20, 2),
-  new Student("2", "Jane Smith", 23, 3),
-  new Student("3", "Mike Johnson", 18, 2),
-];
+(async function main() {
+  const { verbose, quiet } = parseArgs();
 
-function addStudent(name, age, grade) {
-  throw new Error("Method is not yet implemented");
-}
+  const logger = new Logger(verbose, quiet);
+  const manager = new StudentManager(logger);
+  const backupService = new BackupService(manager, logger);
 
-function removeStudent(id) {
-  throw new Error("Method is not yet implemented");
-}
+  new EventObserver(manager, backupService, logger);
 
-function getStudentById(id) {
-  throw new Error("Method is not yet implemented");
-}
+  logger.log('Loading student data...');
+  await manager.loadJSON(DATA_FILE);
 
-function getStudentsByGroup(group) {
-  throw new Error("Method is not yet implemented");
-}
+  backupService.start();
 
-function getAllStudents() {
-  throw new Error("Method is not yet implemented");
-}
+  demo(manager, logger);
 
-function calculateAverageAge() {
-  throw new Error("Method is not yet implemented");
-}
+  // Keep process alive to demonstrate backup (e.g., 6 seconds for a 5s interval)
+  logger.log('Waiting for backup service...');
+  await delay(6000);
 
-class Logger {
-  #isVerboseModeEnabled = false;
-  #isQuietModeEnabled = false;
+  // Stop backup service
+  backupService.stop();
 
-  constructor(verbose = false, quiet = false) {
-    this.#isVerboseModeEnabled = verbose;
-    this.#isQuietModeEnabled = quiet;
-  }
+  logger.log('Saving data...');
+  await manager.saveToJSON(DATA_FILE);
 
-  /**
-   * TODO: Implement the log method
-   *
-   * If "verbose" flag is set: log the message + log additional system data from the os module
-   * If "quiet" flag is set: suppress the logging output
-   *
-   *  Example system data to log:
-   * - Current timestamp
-   * - Operating system platform
-   * - Total memory
-   * - Free memory
-   * - CPU model
-   */
-  log(...data) {
-    console.log(...data);
-  }
-}
+  const reporter = new BackupReporter(BACKUP_DIR, logger);
+  await reporter.generateReport();
 
-function saveToJSON(data, filePath) {
-  throw new Error("Method is not yet implemented");
-}
-
-function loadJSON(filePath) {
-  throw new Error("Method is not yet implemented");
-}
+  logger.log('Done.');
+})()
