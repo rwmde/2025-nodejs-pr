@@ -16,23 +16,5 @@
     "name": "Test1",
     "age": 20,
     "group": "T1"
-  },
-  {
-    "id": "1763823745666",
-    "name": "Test2",
-    "age": 21,
-    "group": "T2"
-  },
-  {
-    "id": "1763824549010",
-    "name": "TestUser",
-    "age": 20,
-    "group": "T1"
-  },
-  {
-    "id": "1763824882002",
-    "name": "Anna",
-    "age": 21,
-    "group": "A1"
   }
 ]
