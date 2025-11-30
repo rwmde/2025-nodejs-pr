@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Students API Demo</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Yury's Students API Demo</h1>
+
+      <section id="app">
+        <div id="message" aria-live="polite"></div>
+
+        <h2>Students</h2>
+        <div>
+          <form id="addForm">
+            <input id="name" placeholder="Name" />
+            <input id="age" placeholder="Age" type="number" />
+            <input id="group" placeholder="Group" />
+            <button type="submit">Add</button>
+          </form>
+        </div>
+
+        <div style="margin-top:12px;">
+          <label>Filter by group: <input id="groupFilter" placeholder="group id"/></label>
+          <button id="groupBtn">Filter</button>
+        </div>
+
+        <table id="students" border="1" style="width:100%; margin-top:12px; border-collapse:collapse;">
+          <thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Group</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
+
+        <div style="margin-top:12px">Average age: <span id="avg">0</span></div>
+
+        <div style="margin-top:12px">
+          <button id="saveBtn">Save to file</button>
+          <button id="loadBtn">Load from file</button>
+        </div>
+
+        <h3>Backup</h3>
+        <div>
+          <button id="backupStart">Start Backup</button>
+          <button id="backupStop">Stop Backup</button>
+          <button id="backupStatus">Status</button>
+        </div>
+      </section>
+
+      <script src="/app.js" type="module"></script>
+    </main>
+  </body>
+</html>

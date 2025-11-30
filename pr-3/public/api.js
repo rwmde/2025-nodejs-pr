@@ -1,0 +1,15 @@
+export const API = {
+    getStudents: () => fetch('/api/students').then(r => r.json()),
+    addStudent: (s) => fetch('/api/students', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(s) }).then(r => r.json()),
+    replaceStudents: (arr) => fetch('/api/students', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(arr) }).then(r => r.json()),
+    getStudent: (id) => fetch(`/api/students/${id}`).then(r => r.ok ? r.json() : Promise.reject(r)),
+    updateStudent: (id, s) => fetch(`/api/students/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(s) }).then(r => r.json()),
+    deleteStudent: (id) => fetch(`/api/students/${id}`, { method: 'DELETE' }).then(r => r.json()),
+    getByGroup: (g) => fetch(`/api/students/group/${g}`).then(r => r.json()),
+    avgAge: () => fetch('/api/students/average-age').then(r => r.json()),
+    save: () => fetch('/api/students/save', { method: 'POST' }).then(r => r.json()),
+    load: () => fetch('/api/students/load', { method: 'POST' }).then(r => r.json()),
+    backupStart: () => fetch('/api/backup/start', { method: 'POST' }).then(r => r.json()),
+    backupStop: () => fetch('/api/backup/stop', { method: 'POST' }).then(r => r.json()),
+    backupStatus: () => fetch('/api/backup/status').then(r => r.json()),
+};
