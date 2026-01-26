@@ -1,0 +1,52 @@
+{
+  "name": "task",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx tsx ./server.ts",
+    "migrate": "npx tsx migrations/runMigrations.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:unit": "jest --testPathIgnorePatterns='integration'",
+    "test:integration": "jest --testPathPattern='integration'",
+    "test:all": "jest --testPathPattern='(unit|integration)'",
+    "test:coverage": "jest --coverage",
+    "test:coverage:watch": "jest --coverage --watch",
+    "test:coverage:unit": "jest --coverage --testPathIgnorePatterns='integration'",
+    "test:coverage:integration": "jest --coverage --testPathPattern='integration'"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "dependencies": {
+    "@types/express-status-monitor": "^1.3.3",
+    "@types/swagger-ui-express": "^4.1.6",
+    "@types/winston": "^2.4.4",
+    "bcrypt": "^6.0.0",
+    "compression": "^1.8.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-status-monitor": "^1.3.4",
+    "jest": "^30.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "mssql": "^12.2.0",
+    "swagger-ui-express": "^4.6.3",
+    "tsx": "^4.21.0",
+    "winston": "^3.19.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/compression": "^1.8.1",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/mssql": "^9.1.8",
+    "@types/supertest": "^6.0.3",
+    "jest": "^29.7.0",
+    "joi": "^18.0.2",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2"
+  }
+}
