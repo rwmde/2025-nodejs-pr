@@ -1,77 +1,152 @@
-# Assignment 6 - Testing, Logging, Monitoring, Swagger
+```markdown
+# Student Management API (Lab Project)
+---
 
-## Tasks
+## ✨ Features
 
-### Cover your application logic with unit tests
+- **Authentication & Authorization**
+  - Register new users with roles (student, teacher, admin).
+  - Login with email and password → returns JWT token.
+  - Role-based access control for protected endpoints.
 
-Cover your server functionality with unit tests.
+- **Student Management**
+  - CRUD operations for students (`GET`, `POST`, `PUT`, `DELETE`).
+  - Protected endpoints requiring JWT and role permissions.
 
-Here what you can use:
-
-- [Jest](https://jestjs.io/) (the most popular third-party testing library)
-  - [Getting Started](https://jestjs.io/docs/getting-started)
-- [Node.js test runner](https://nodejs.org/docs/latest/api/test.html#test-runner) (built-in solution)
-  - [Discovering Node.js's test runner](https://nodejs.org/en/learn/test-runner/introduction)
-
-### Cover your application with logging
-
-In previous assignments you should have already implemented your custom `Logger` for general usage. Since your project has grown bigger and more complex, having better and more functional logging will make it easier for you to analyze errors and investigate bugs.
-
-`winston` is a logging library which you can integrate into a project. With it you will be able to transport logs into different destinations (local files, database or dedicated services for analyzing application metrics).
-
-It is expected that you will log different logging levels at least into different files:
-
-- File with combined logs (everything including info, errors, fatal, debug, etc.).
-- File with error logs (only errors and fatal).
-
-#### Implement environment-based logging
-
-Your application's logging should work at least in two modes based on value stored in `NODE_ENV` variable:
-
-- `production` - should store your logs into different files
-- `development` - should just print everything into a `console` in a simple format
-
-### Integrate simple monitoring
-
-Integrate simple metrics collector of your system server resources that can be easily monitored on a web-page.
-
-You may use several options:
-
-- [Express Status Monitor](https://www.npmjs.com/package/express-status-monitor) - simple and easy to setup.
-- [Clinic.js Doctor](https://www.clinicjs.org/doctor/) - can be challenging to setup but it will reward you with useful metrics, warnings and recommendations.
-
-It is ok to use one of them or either to bring some other existing solution into your project. Don't forget that it should visually display common metrics (CPU usage, RAM, requests/responses, etc.)
-
-### Integrate Swagger
-
-You need to follow up your API with documentation that serves as a source of truth for anyone who will work with your API later.
-
-The most common option is to use [Swagger](https://swagger.io/).
-
-Since you're using Express framework you can use this npm library:
-
-- [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express)
-
-## Evaluation criteria
-
-- **Unit Tests**
-  - **2 pts** - Core functionality is covered with unit tests.
-    - **1 pts** - Unit tests are written but core functionality is covered partially.
-    - **0 pts** - Tests are missing or broken.
 - **Logging**
-  - **2 pts** - Your core functionality is fully logged with different levels of severity. Logs are written into the different files. Environment-based logging is supported.
-    - **1 pts** - Logging works but it there is lack of utilization of severity levels. Some of the required functionality is missing.
-    - **0 pts** - Logging is missing or the initial logger from previous assignments remains untouched.
-- **Metrics**
-  - **2 pts** - Activity of a running server can be monitored.
-    - **0 pts** - Missing or broken.
-- **Swagger**
-  - **4 pts** - Swagger is integrated into your application. It supports UI and can be easily viewed as the web-page.
-    - **2 pts** - Swagger is integrated but with issues.
-    - **0 pts** - Missing or broken.
+  - Winston logger configured:
+    - Development → logs to console.
+    - Production → logs to files (`logs/combined.log`, `logs/error.log`).
 
-### Penalties
+- **Monitoring**
+  - `express-status-monitor` provides real-time metrics at `/status`.
 
-- If you haven't uploaded your assignment before the deadline - your max grade would be **7 pts** + you are allowed to send your work before the next practical lesson. If the work would not be sent before the second deadline - it will be automatically evaluated to **0 pts**.
+- **API Documentation**
+  - Swagger UI available at `/api/docs`.
 
-- If the submitted code is suspected of being artificially generated and/or copy-pasted, the work will be either returned with **0 pts** or the student will be asked to explain their code in detail. If student fails to explain their code, the practical task is considered as failed and will be returned with **0 pts**.
+- **Testing**
+  - Jest + Supertest for unit and integration tests.
+  - Covers authentication service, student validator, and server endpoints.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+```bash
+git clone <your-repo-url>
+cd <project-folder>
+```
+
+### 2. Install dependencies
+```bash
+npm install
+```
+
+### 3. Environment variables
+Create a `.env` file in the root with values like:
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=5433
+DB_NAME=students_db
+DB_USER=postgres
+DB_PASSWORD=postgres
+JWT_SECRET=your_secret_key
+```
+
+### 4. Run the server (development mode)
+```bash
+npm run dev
+```
+Expected output:
+```
+Server running at http://localhost:3000
+Database connected
+Tables created (sync)
+```
+
+### 5. Run the server (production mode)
+```bash
+NODE_ENV=production npm run dev
+```
+Logs will be written to:
+- `logs/combined.log`
+- `logs/error.log`
+
+---
+
+## 🧪 Running Tests
+
+Run all Jest tests:
+```bash
+npm test
+```
+
+Expected result:
+```
+Test Suites: 3 passed, 3 total
+Tests:       8 passed, 8 total
+```
+
+---
+
+## 📖 API Documentation (Swagger)
+
+1. Start the server (`npm run dev`).
+2. Open Swagger UI in browser:
+   ```
+   http://localhost:3000/api/docs
+   ```
+3. Available endpoints:
+   - **Auth**
+      - `POST /api/auth/register` → Register new user
+      - `POST /api/auth/login` → Login and get JWT
+   - **Students**
+      - `GET /api/students` → Get all students
+      - `POST /api/students` → Create student
+      - `GET /api/students/{id}` → Get student by ID
+      - `PUT /api/students/{id}` → Update student
+      - `DELETE /api/students/{id}` → Delete student
+   - **Protected Students**
+      - `GET /api/students-protected` → Requires JWT
+      - `POST /api/students-protected` → Requires JWT + role
+
+4. To test protected endpoints:
+   - First call `POST /api/auth/login` with valid credentials.
+   - Copy the returned JWT token.
+   - Click **Authorize** in Swagger UI and paste:
+     ```
+     Bearer <your_token>
+     ```
+   - Now you can access protected routes.
+
+---
+
+## 📊 Monitoring
+
+Open:
+```
+http://localhost:3000/status
+```
+You will see real-time metrics (CPU, memory, requests).
+
+---
+
+## ✅ Checklist for Verification
+
+1. `npm run dev` → server starts.
+2. `http://localhost:3000/api/docs` → Swagger UI opens.
+3. Register a user → login → get JWT.
+4. Authorize in Swagger → test protected endpoints.
+5. `http://localhost:3000/status` → monitoring dashboard.
+6. `npm test` → all tests pass.
+7. In production mode, check `logs/combined.log` and `logs/error.log`.
+
+---
+
+## 📌 Notes
+
+- Ensure PostgreSQL is running and accessible with the credentials in `.env`.
+- Create the `logs` folder manually or let `logger.ts` auto-create it.
+- Use `curl` or Swagger UI to verify API endpoints.
