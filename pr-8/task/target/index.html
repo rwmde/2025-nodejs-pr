@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Server Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Welcome to Live Server!</h1>
+    <p>This page will automatically reload when you make changes to any file in the target directory.</p>
+
+    <div class="info-box">
+      <h2>How it works:</h2>
+      <ol>
+        <li>The server watches the <code>target</code> directory for changes</li>
+        <li>When a file changes, the server sends a message via WebSocket</li>
+        <li>The injected script receives the message and reloads the page</li>
+      </ol>
+    </div>
+
+    <div class="demo-section">
+      <h2>Try it out111!</h2>
+      <p>Edit this file and save it. The page will reload automatically.</p>
+      <p>Current time: <span id="time"></span></p>
+    </div>
+
+    <div class="counter">
+      <h3>Counter Demo</h3>
+      <p>Count: <span id="count">0</span></p>
+      <button onclick="increment()">Increment</button>
+      <button onclick="decrement()">Decrement</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

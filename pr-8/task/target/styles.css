@@ -1,0 +1,115 @@
+/* Live Server Demo Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+}
+
+h2 {
+  color: #555;
+  margin: 20px 0 15px;
+  font-size: 1.5rem;
+}
+
+h3 {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.info-box {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+  border-left: 4px solid #667eea;
+}
+
+.info-box ol {
+  margin-left: 20px;
+  color: #555;
+}
+
+.info-box li {
+  margin: 10px 0;
+}
+
+code {
+  background: #e9ecef;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', Courier, monospace;
+  color: #d63384;
+}
+
+.demo-section {
+  background: #e7f3ff;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+  border: 2px dashed #667eea;
+}
+
+.counter {
+  text-align: center;
+  padding: 30px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.counter button {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background 0.3s ease;
+}
+
+.counter button:hover {
+  background: #764ba2;
+}
+
+#count {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #667eea;
+}
+
+#time {
+  font-weight: bold;
+  color: #667eea;
+}
