@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1763236477015",
+    "name": "Ibragim",
+    "age": 22,
+    "group": "B1"
+  },
+  {
+    "id": "1763823272534",
+    "name": "TestStudent",
+    "age": 20,
+    "group": "T1"
+  },
+  {
+    "id": "1763823686659",
+    "name": "Test1",
+    "age": 20,
+    "group": "T1"
+  }
+]
