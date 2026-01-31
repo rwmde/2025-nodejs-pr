@@ -1,83 +1,406 @@
-# Assignment 5 - Authentication, Security, Roles, Permissions
+# Students Management System
 
-## Tasks
+**Node.js + TypeScript + Express + PostgreSQL**
 
-### Expand your Students Management System database structure
+## 📌 Project Description
 
-Right now you should have only a `Students` table with some basic columns repeating your `Student` class properties.
+This project is a Students Management System built with **Node.js**, **TypeScript**, **Express**, and **PostgreSQL** using **Sequelize ORM**.
 
-This assignment requires more complex interaction with your system, so create new tables:
+The project was developed step by step during laboratory works.
+**Lab 5** extends the previous functionality by adding **authentication, authorization, roles, and permissions**.
 
-- `Roles` - will store roles which will be assigned to `Users` in your table. Some roles to consider: `student`, `teacher`, `admin`.
-- `Users` - will store general user information such as `id`, `name`, `surname`, `email` (should be unique), `role`, `password` (don't forget to store only encrypted data here).
-- `Subjects` - will store general information about subjects which students study at University. Columns to consider: `id`, `subject_name`
-- `Grades` - will store grades assigned to students. Consider applying columns like `subject_id`, `student_id`, `grade`, `evaluated_at`, etc.
+---
 
-Your `Students` table will need to be updated as well since from now on your students should be considered as existing users in your system. Adding a new `user_id` column will be a good move.
+## 🛠 Technologies Used
 
-### Implement authentication using JWT
+* Node.js
+* TypeScript
+* Express
+* PostgreSQL
+* Sequelize + sequelize-typescript
+* JWT (jsonwebtoken)
+* bcrypt
+* Joi (data validation)
+* dotenv
 
-Your application should support endpoints for `login` and `registration`.
+---
 
-Your existing endpoints should be protected from reaching them if user is ot authenticated into your system.
+## 📂 Project Structure
 
-#### Login
+```
+pr-5/
+└── task/
+    ├── .env
+    ├── package.json
+    └── src/
+        ├── db/
+        │   ├── db.ts
+        │   └── migrate.ts
+        ├── models/
+        │   ├── Student.ts
+        │   ├── User.ts
+        │   ├── Role.ts
+        │   ├── Subject.ts
+        │   └── Grade.ts
+        ├── services/
+        ├── validators/
+        │   └── studentValidator.ts
+        ├── initData.ts
+        └── server.ts
+```
 
-User already exist in the database.
+---
 
-If everything is entered correctly - your backend should issue the JWT token which will contain general information about user, including it's role, id, name, etc.
+## ⚙️ Environment Configuration
 
-Later your user should include this JWT token into `Authentication` header before sending a request to another API endpoints.
+Create a `.env` file in the `task` folder with the following content:
 
-#### Registration
+```env
+DB_HOST=localhost
+DB_PORT=5433
+DB_NAME=students_db
+DB_USER=postgres
+DB_PASSWORD=postgres
+PORT=3000
+JWT_SECRET=supersecretkey
+```
 
-User should provide a unique email and all the information that will populate all necessary columns in `Users` table.
+---
 
-After that user should be able to login into the system without any problems.
+## 🗄 Database Setup
 
-#### Useful Links
+1. Create a PostgreSQL database:
 
-- Encrypt user password:
-  - [`bcrypt` npm package](https://www.npmjs.com/package/bcrypt)
-- JWT
-  - [Introduction to JWT](https://www.jwt.io/introduction#when-to-use-json-web-tokens)
-  - [`jsonwebtoken` npm package](https://www.npmjs.com/package/jsonwebtoken)
-  - [JSON Web Token (JWT) Debugger](https://www.jwt.io/)
-- To generate random unique ID for your users (make sure that you've specified the correct length of stored ID string in your database):
-  - [`crypto.randomUUID`](https://nodejs.org/docs/latest-v14.x/api/crypto.html#crypto_crypto_randomuuid_options)
-  - [`uuid` npm package](https://www.npmjs.com/package/uuid)
+```sql
+CREATE DATABASE students_db;
+```
 
-### Setup User Roles and/or Permissions
+2. Install dependencies:
 
-You are free to choose either making a role-based access or permission-based access to your API resources.
+```bash
+npm install
+```
 
-In both approaches it is expected that you've updated database structure as it was proposed in the first section of this assignment.
+3. Run migration (creates tables and test data):
 
-You should have at least 3 roles. One of them should have all permissions (most commonly called `admin`) and one of them should have the least permissions (for example `guest` or `student`). There should be another role which will represent someone who can have more permissions than the `guest` but less than the `admin` (most commonly - `moderator` or `teacher` in your case).
+```bash
+npx ts-node src/db/migrate.ts
+```
 
-Guard your endpoint with middleware which will check roles either by reading the payload from JWT token or make a request to your database.
+The following tables will be created automatically:
 
-## Evaluation criteria
+* `roles`
+* `users`
+* `students`
+* `subjects`
+* `grades`
 
-- **Core Functionality**
-  - **4 pts** - Your endpoints are guarded and blocking any unauthorized access to your resources.
-    - **2 pts** - Endpoints are mostly protected but with some issues.
-    - **0 pts** - Missing or broken.
-- **Database Structure Expansion**
-  - **2 pts** - Your database structure is expanded based on the task description. Relations between tables are correct and everything works without issues.
-    - **1 pt** - Tables are created but their relations or structure is incorrect or not working properly.
-    - **0 pts** - No new tables were created.
-- **Setup User Roles and/or Permissions**
-  - **2 pts** - Your endpoints works correctly with roles or specified.permissions. Roles with the least permissions will never have access to operations requiring higher amount of permissions.
-    - **1 pt** - Works but with issues.
-    - **0 pts** - Roles are not implemented or not working completely.
-- **Code Stability & Structure**
-  - **2 pts** - Clean, modular, stable and easy to follow.
-    - **1 pt** - Acceptable but has inconsistencies.
-    - **0 pts** - Disorganized and confusing.
+---
 
-### Penalties [**Updated**]
+4. Run server 
+```bash
+npm run dev
+```
+## 🔐 Authentication & Authorization (Lab 5)
 
-- If you haven't uploaded your assignment before the deadline - your max grade would be **7 pts** + you are allowed to send your work before the next practical lesson. If the work would not be sent before the second deadline - it will be automatically evaluated to **0 pts**.
+### Roles
 
-- If the submitted code is suspected of being artificially generated and/or copy-pasted, the work will be either returned with **0 pts** or the student will be asked to explain their code in detail. If student fails to explain their code, the practical task is considered as failed and will be returned with **0 pts**.
+The system supports **role-based access control**:
+
+* **admin** – full access
+* **teacher** – extended permissions
+* **student** – limited permissions
+
+Roles are stored in the database and included in the JWT token.
+
+---
+
+Absolutely, Anastasya — here’s a clean, professional **README section in English** that explains how to test **registration, login, JWT authentication, and role‑based access** in your API.  
+It’s written in a style suitable for GitHub.
+
+---
+
+# 📘 Authentication & Authorization Testing Guide
+
+This guide explains how to test **user registration**, **login**, **JWT authentication**, and **role‑based access control** using Postman or any REST client.
+
+---
+
+## 🔐 1. Register a New User
+
+### **Endpoint**
+```
+POST /api/auth/register
+```
+
+### **Body (JSON)**
+```json
+{
+  "name": "Alice",
+  "surname": "Test",
+  "email": "alice@test.com",
+  "password": "123456",
+  "roleId": "<ROLE_UUID>"
+}
+```
+
+### **Where to get `roleId`**
+Run:
+```sql
+SELECT * FROM roles;
+```
+You will see UUIDs for:
+- `student`
+- `teacher`
+- `admin`
+
+### **Expected Response**
+```json
+{
+  "id": "...",
+  "name": "Alice",
+  "surname": "Test",
+  "email": "alice@test.com",
+  "role": "student"
+}
+```
+
+If you see this — registration works correctly.
+
+---
+
+## 🔑 2. Login
+
+### **Endpoint**
+```
+POST /api/auth/login
+```
+
+### **Body (JSON)**
+```json
+{
+  "email": "alice@test.com",
+  "password": "123456"
+}
+```
+
+### **Expected Response**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIs..."
+}
+```
+
+This token must be used for all protected routes.
+
+---
+
+## 🧪 3. Decode the Token (Optional)
+
+Go to:  
+https://jwt.io
+
+Paste the token and verify that the payload contains:
+
+```json
+{
+  "id": "...",
+  "email": "alice@test.com",
+  "role": "student"
+}
+```
+
+If `role` is a string (`admin`, `teacher`, `student`), role‑based access will work.
+
+---
+
+## 🔒 4. Access a Protected Route
+
+Example:
+
+### **Endpoint**
+```
+GET /api/students
+```
+
+### **Headers**
+```
+Authorization: Bearer <your_token_here>
+```
+
+### **Expected Response**
+- If the token is valid → list of students
+- If missing token → `{ "error": "No token" }`
+- If token is invalid → `{ "error": "Invalid token" }`
+
+---
+
+## 🛡 5. Test Role‑Based Access
+
+Creating a student requires `admin` or `teacher` role.
+
+### **Endpoint**
+```
+POST /api/students
+```
+
+### **Headers**
+```
+Authorization: Bearer <your_token_here>
+```
+
+### **Body**
+```json
+{
+  "name": "Bob",
+  "age": 20,
+  "group": "A1"
+}
+```
+
+### **Expected Behavior**
+- **admin / teacher** → student is created (200 OK)
+- **student** → `{ "error": "Forbidden" }`
+
+This confirms that `roleMiddleware` works.
+
+---
+
+## ❌ 6. Negative Test Cases
+
+### Wrong password
+```
+POST /api/auth/login
+```
+```json
+{
+  "email": "alice@test.com",
+  "password": "wrong"
+}
+```
+Expected:
+```json
+{ "error": "Invalid credentials" }
+```
+
+### Wrong email
+```json
+{ "email": "unknown@test.com", "password": "123456" }
+```
+Expected:
+```json
+{ "error": "Invalid credentials" }
+```
+
+### Missing token
+```
+GET /api/students
+```
+Expected:
+```json
+{ "error": "No token" }
+```
+
+---
+
+## 📚 Students API
+
+### Get all students
+
+```
+GET /api/students
+```
+
+### Get student by ID
+
+```
+GET /api/students/:id
+```
+
+### Create student (admin / teacher only)
+
+```
+POST /api/students
+```
+
+### Update student (admin / teacher only)
+
+```
+PUT /api/students/:id
+```
+
+### Delete student (admin only)
+
+```
+DELETE /api/students/:id
+```
+
+---
+
+## ✅ Data Validation
+
+All `POST` and `PUT` requests are validated using **Joi**.
+
+Example validation errors:
+
+* empty name
+* negative age
+* missing required fields
+
+Invalid requests return **HTTP 400**.
+
+---
+
+## 🔐 Security
+
+* Passwords are encrypted using **bcrypt**
+* Plain text passwords are never stored
+* JWT is used for authentication
+* Role-based middleware prevents unauthorized access
+
+---
+
+## 🧪 How to Test the Application
+
+1. Start the server:
+
+```bash
+npm run dev
+```
+
+2. Use **Postman** or **Bruno**
+
+3. Steps:
+
+   * Register a user
+   * Login and get JWT token
+   * Access protected endpoints with and without token
+   * Verify role restrictions
+   * Try invalid input to test Joi validation
+
+---
+
+## 📝 Lab 5 Summary
+
+During Lab 5 the following features were implemented:
+
+1. Database structure was expanded with new tables
+2. Authentication using JWT was added
+3. Password encryption with bcrypt
+4. Role-based access control
+5. Protected API endpoints
+6. Input validation using Joi
+7. Clean and modular project structure
+
+---
+
+## ✅ Conclusion
+
+The project fully meets the requirements of **Laboratory Work 5**:
+
+* Secure authentication
+* Proper authorization
+* Expanded database schema
+* Stable and structured code
+
+---
