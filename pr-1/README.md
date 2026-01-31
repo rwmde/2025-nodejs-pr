@@ -1,150 +1,187 @@
-# Practical Task 1 - Students Management System
+# Student Management System (Lab 4)
 
-In this Practical Task you will work with pure Node.js without any frameworks and external libraries.
+This is a Node.js + TypeScript project for managing student data. The data is stored in a **PostgreSQL** database, and all CRUD operations are implemented. Data validation is included using **Joi**, and the database can be initialized automatically via Sequelize.
 
-You will practice work with Built-In Node.js modules and concept of modules themselves.
+---
 
-## Preparations
+## **1. Setup**
 
-Here are some preparations to make sure you have everything you need to work with Node.js.
+### **1.1 Clone the repository**
 
-### Install Node.js
-
-Make sure you have installed Node.js on your local machine.
-
-To do that you need to visit [nodejs.org](https://nodejs.org/en) and click either "Get Node.js" button or go to "Download" section (see website header section). From there - follow the installation instructions.
-
-_By default you will be proposed to install Long-Term Support (LTS) version of Node.js. You can proceed with it._
-
-### Check that Node.js is installed
-
-Make sure that Node.js and NPM are installed by checking their's current version. Run the following commands in your terminal:
-
-```sh
-node -v
+```bash
+git clone <your-repo-url>
+cd <your-project-folder>
 ```
 
-```sh
-npm -v
+### **1.2 Install dependencies**
+
+```bash
+npm install
 ```
 
-### Initialize your first package
+### **1.3 Setup `.env` file**
 
-Before you start - you need to initialize your project with `package.json`.
+Create a file named `.env` in the root of the project and add the following configuration:
 
-Go to `pr-1/` directory and run `npm init`. Follow the instructions and specify project name and your name/nickname (_preferrably_).
+```
+DB_HOST=localhost
+DB_PORT=5433
+DB_NAME=students_db
+DB_USER=postgres
+DB_PASSWORD=postgres
+PORT=3000
+```
 
-## Tasks
+**Explanation:**
 
-### 1. Working with Node.js CommonJS modules
-
-In `task/` directory you can find `index.js` file.
-
-This file contains some class and methods which needs to be logically organized into a smaller pieces. To achieve that you need to use the concept of modules in Node.js.
-
-At the moment you don't need to immediately implement all these methods. Just to split the code into a separate files.
-
-You are free to collect methods into classes and export them as you like. Yet, it would be nice to make these separations logical and semantically correct.
-
----
-
-Useful links/Starting points:
-
-- [Modules: CommonJS modules](https://nodejs.org/api/modules.html#modules-commonjs-modules)
+* `DB_HOST` — Database server host (localhost if running locally).
+* `DB_PORT` — PostgreSQL port (default here is 5433).
+* `DB_NAME` — Name of the database (`students_db`).
+* `DB_USER` — Database user (`postgres`).
+* `DB_PASSWORD` — Password for the user (`postgres`).
+* `PORT` — Port for the Express server (default 3000).
 
 ---
 
-### 2. Implement methods
+### **1.4 Run PostgreSQL**
 
-All methods which were initially defined in `index.js` should be implemented.
-
-### 3. Read-Write students from file
-
-Your students need to be stored somewhere.
-
-Right now - the better option would be to convert all your students into JSON format and then write them into `.json` file.
-
-Read/Write file _should_ be implemented using standard Built-In `fs` module.
-
-You need to implement `saveToJSON` and `loadJSON` methods which are initially stored in `index.js` file.
-
-> NOTE: Placing new methods in the correct place in the project + documenting them will help you to get the higher mark.
-
-In addition to implemented methods - implement the logic which will transform the loaded data from JSON file into an array of `Student` objects.
+Make sure PostgreSQL server is running and accessible using the credentials from `.env`. You can use pgAdmin or CLI to create the database `students_db` if it doesn’t exist.
 
 ---
 
-Useful links/Starting points:
+### **1.5 Run database migration**
 
-- [`fs.writeFileSync`](https://nodejs.org/api/fs.html#fswritefilesyncfile-data-options)
-- [`fs.readFileSync`](https://nodejs.org/api/fs.html#fsreadfilesyncpath-options)
+To create tables automatically:
+
+```bash
+npx ts-node src/db/migrate.ts
+```
+
+Or, if using Sequelize sync in `db.ts`:
+
+```ts
+sequelize.sync({ force: false });
+```
+
+This will create the `students` table automatically.
 
 ---
 
-### 4. Implement `Logger`
+### **1.6 Start the server**
 
-Cover your _Students Management System_ with logger which may help you to collect and display some additional data from your system.
+```bash
+npm run dev
+```
 
-#### Implement `log` method
+Server will start on `http://localhost:3000`.
 
-Follow the instructions from `TODO` comment and adjust the method logic as expected.
+---
 
-To get the data from your operating system you can use built-in Node.js module - `os`.
+## **2. API Endpoints**
 
-Don't forget that `log` should work differently depending on the values you've passed to `Logger` constructor.
+### **2.1 Get all students**
 
-#### Specify `Logger` mode through CLI arguments
+```
+GET /api/students
+```
 
-Sometimes we don't need to see the detailed logs as well as we don't need to display anything at all.
+### **2.2 Get a student by ID**
 
-For that `Logger` constructor has `verbose` and `quiet` parameters.
+```
+GET /api/students/:id
+```
 
-To make our `Logger` more functional - implement reading CLI arguments from `process.argv`.
+### **2.3 Add a new student**
 
-CLI arguments your program should expect:
+```
+POST /api/students
+Content-Type: application/json
 
-- If `--verbose` is passed -> `Logger` should work in verbose mode.
-- If `--quiet` is passed -> `Logger` should work in quiet mode.
+{
+  "name": "David",
+  "age": 23,
+  "group": "D1"
+}
+```
 
-Both of these arguments are optional.
+Validation: Name (string), Age (number), Group (string). Returns 400 if invalid.
 
-#### Integrate `Logger` into your main logic
+### **2.4 Update a student**
 
-Replace all default `console.logs` with your `Logger.log` method.
+```
+PUT /api/students/:id
+Content-Type: application/json
 
-## Theoretical Questions
+{
+  "name": "David Updated",
+  "age": 24,
+  "group": "D2"
+}
+```
 
-Questions are based on information given in lections.
+### **2.5 Delete a student**
 
-1. What is Node.js?
-2. What are the benefits of Node.js?
-3. How libuv and V8 are related to Node.js?
-4. What are the differences between Node.js and Web Browser?
-5. What is npm? Why do we need it?
-6. What are the alternatives to npm?
-7. How can you read arguments which were passed through CLI to your script?
-8. Explain how to work with CommonJS modules. Import/Export.
-9. Is it possible to execute your `.js` script without calling `node`? If yes - how?
-10. What is the core difference between CommonJS and ESM modules?
-11. Which functionality provides built-in `fs` module?
-12. Which functionality provides built-in `os` module?
-13. Which functionality provides built-in `path` module?
+```
+DELETE /api/students/:id
+```
 
-## Evaluation Criteria
+---
 
-### Practical Part
+## **3. Project Structure**
 
-- Task 1 - **1 pt**
-- Task 2 - **1.5 pts**
-- Task 3 - **2 pts**
-- Task 4 - **2.5 pts**
+```
+/src
+  /db
+    db.ts          # Database connection
+    migrate.ts     # Migration script for initial data
+  /models
+    Student.ts     # Sequelize model for Student
+  /validators
+    studentValidator.ts  # Joi validation schema
+  server.ts        # Express server
+.env               # Environment variables
+package.json
+```
 
-In Total: **7 pts**
+---
 
-### Theoretical Part
+## **4. Short Step-by-Step Report for Lab 4**
 
-You should expect 3 questions. Each question you answered well is **+1 pt**.
+1. **Setup PostgreSQL**
 
-### Final Mark
+    * Installed PostgreSQL locally.
+    * Created database `students_db`.
 
-**Practical part** (max 7 pts) + **Theoretical Part** (max 3 pts) = 10.
+2. **Configure `.env`**
+
+    * Added DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD, PORT.
+
+3. **Connect Node.js project to PostgreSQL**
+
+    * Installed `pg`, `pg-hstore`, `sequelize`, `sequelize-typescript`.
+    * Configured `db.ts` with Sequelize using `.env` variables.
+
+4. **Create Student model**
+
+    * Defined `Student` model with `id`, `name`, `age`, `group`.
+    * Set `id` as primary key.
+
+5. **Database migration / sync**
+
+    * Ran `migrate.ts` or `sequelize.sync()` to create `students` table.
+    * Seeded initial test data with unique `id`.
+
+6. **CRUD Endpoints**
+
+    * Implemented `/api/students` endpoints with Express.
+    * Added Joi validation for POST and PUT.
+
+7. **Tested all endpoints**
+
+    * Verified GET, POST, PUT, DELETE.
+    * Checked responses, status codes, and data stored in PostgreSQL.
+
+8. **Backup service** (optional for lab 3 continuation)
+
+    * Handles periodic JSON backups if required.
+

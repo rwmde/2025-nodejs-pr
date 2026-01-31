@@ -1,0 +1,14 @@
+[
+  {
+    "id": "ea04cecf-6a58-4d1d-b07e-82d9ecc4729b",
+    "name": "Bob",
+    "age": 21,
+    "group": "B1"
+  },
+  {
+    "id": "ecdda935-446f-4a2c-891b-ce901603a00c",
+    "name": "Charlie",
+    "age": 22,
+    "group": "C1"
+  }
+]
