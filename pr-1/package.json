@@ -1,0 +1,14 @@
+{
+  "name": "pr-1",
+  "version": "1.0.0",
+  "description": "Practice 1",
+  "license": "MIT",
+  "author": "vtihii",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "run": "node src/index.js",
+    "run:verbose": "node src/index.js --verbose",
+    "run:quiet": "node src/index.js --quiet"
+  }
+}
